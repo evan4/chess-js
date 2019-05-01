@@ -14,7 +14,47 @@ module.exports = {
     },
     "rules": {
         "allowTernary": true,
-        "indent": ["error", 4],
-        "no-alert": 0
+        "indent": ["error", 2],
+        "space-before-blocks": "error",
+        "space-infix-ops": ["error", {"int32Hint": false}],
+        "padded-blocks": ["error", "always"],
+        "space-in-parens": ["error", "always"],
+        "array-bracket-spacing": ["error", "always"],
+        "object-curly-spacing": ["error", "always"],
+        "no-alert": 0,
+        "prefer-const": ["error", {
+            "destructuring": "any",
+            "ignoreReadBeforeAssign": false
+        }],
+        "object-shorthand": ["error", "always", {
+            "avoidQuotes": true
+        }],
+        "array-callback-return": "error",
+        "prefer-destructuring": ["error", {
+            "VariableDeclarator": {
+                "array": false,
+                "object": true
+            },
+            "AssignmentExpression": {
+                "array": true,
+                "object": true
+            }
+        }, {
+            "enforceForRenamedProperties": false
+        }],
+        "function-paren-newline": ["error", {
+            "minItems": 3
+        }],
+        "spaced-comment": ["error", "always", {
+            "line": {
+                "markers": ["/"],
+                "exceptions": ["-", "+"]
+            },
+            "block": {
+                "markers": ["!"],
+                "exceptions": ["*"],
+                "balanced": true
+            }
+        }]
     }
 };

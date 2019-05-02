@@ -5,25 +5,25 @@ class Border {
 
     // получить объект холста, получить двумерный контекст рисования getContext('2d')
     this.canvas = document.getElementById( 'canvas' );
-    this.elemLeft = this.canvas.offsetLeft;
-    this.elemTop = this.canvas.offsetTop;
     this.ctx = this.canvas.getContext( '2d' );
 
-    // размеры квадрата
+    // размеры клетки
     this.sideSquare = 50;
 
     // массив возможных цветов
-    this.colors = [ 'white', 'black' ];
+    this.colors = [
+      'white',
+      'black',
+    ];
+
+    // цвет выделенной клетки
     this.activeColor = 'blue';
+
+    // цвета возможных ходов конем
     this.predictColorSteps = 'green';
 
-    // массив квадратов
+    // массив клеток
     this.squares = [];
-
-
-    // начальная инициализация массива цветов квадратов и его заполнение дефолтным знацением
-    this.colorsRectangles = Array.from( { length: 64 },
-      ( item, index ) => ( index % 2 ? this.colors[1] : this.colors[0] ) );
 
     // массив цифр
     this.side = Array.from( { length: 8 }, ( item, index ) => index );
@@ -33,14 +33,7 @@ class Border {
 
   }
 
-  // Задание значений для всех квадратов
-  init() {
-
-    this.defaultState();
-    return this;
-
-  }
-
+  // Задание значений для всех клеток
   defaultState() {
 
     // очистка холста
@@ -67,11 +60,13 @@ class Border {
         }
 
         let field = y * this.side.length + x;
+
         if ( y % 2 ) {
 
           field = !( field % 2 );
 
         }
+
         this.squares.push( {
           x: x * this.sideSquare + 25,
           y: top,
@@ -104,14 +99,16 @@ class Border {
 
     this.squares.forEach( ( item ) => {
 
+      const { x, y, color } = item;
+
       this.ctx.lineWidth = 1;
-      this.ctx.fillStyle = item.color;
+      this.ctx.fillStyle = color;
       this.ctx.fillRect(
-        item.x, item.y, this.sideSquare, this.sideSquare,
+        x, y, this.sideSquare, this.sideSquare,
       );
-      this.ctx.strokeStyle = 'rgb(108,117,125)';
+      this.ctx.strokeStyle = 'white';
       this.ctx.strokeRect(
-        item.x, item.y, this.sideSquare, this.sideSquare,
+        x, y, this.sideSquare, this.sideSquare,
       );
 
     } );
@@ -131,24 +128,28 @@ class Border {
   game( e ) {
 
     this.defaultState();
+
     // вычисление позиции курсора
-    const x = e.pageX - this.canvas.offsetLeft;
-    const y = e.pageY - this.canvas.offsetTop;
+    const xPos = e.pageX - this.canvas.offsetLeft;
+    const yPos = e.pageY - this.canvas.offsetTop;
+
     this.squares.some( ( item, index ) => {
 
-      if (
-        y > item.y
-                && y < item.y + this.sideSquare
-                && x > item.x
-                && x < item.x + this.sideSquare
-      ) {
+      const {
+        x, y, pos, color,
+      } = item;
 
-        const { color } = item;
+      if (
+        yPos > y
+                && yPos < y + this.sideSquare
+                && xPos > x
+                && xPos < x + this.sideSquare
+      ) {
 
         if ( color !== this.activeColor ) {
 
           this.squares[index].color = this.activeColor;
-          this.nextSteps( item.pos );
+          this.nextSteps( pos );
 
         } else {
 
@@ -170,15 +171,9 @@ class Border {
     const num = Number( move.charAt( 1 ) );
     const pos = this.letters.indexOf( letter );
 
-
-    // если позиция ошибна, завершить работу
-    if ( num < 1 || num > 8 || pos === -1 ) {
-
-      return;
-
-    }
     const steps = [];
     const len = this.letters.length;
+
     // Вычисление возможных ходов конем
     if ( ( num - 2 ) > 0 ) {
 
@@ -188,6 +183,7 @@ class Border {
         steps.push( index );
 
       }
+
       if ( ( pos + 1 ) < 8 ) {
 
         const index = ( pos + 1 ) + ( len - num + 2 ) * len;
@@ -196,6 +192,7 @@ class Border {
       }
 
     }
+
     if ( ( num - 1 ) > 0 ) {
 
       if ( ( pos - 2 ) >= 0 ) {
@@ -204,6 +201,7 @@ class Border {
         steps.push( index );
 
       }
+
       if ( ( pos + 2 ) < 8 ) {
 
         const index = ( pos + 2 ) + ( len - num + 1 ) * len;
@@ -212,6 +210,7 @@ class Border {
       }
 
     }
+
     if ( ( num + 1 ) <= 8 ) {
 
       if ( ( pos - 2 ) >= 0 ) {
@@ -220,6 +219,7 @@ class Border {
         steps.push( index );
 
       }
+
       if ( ( pos + 2 ) < 8 ) {
 
         const index = ( pos + 2 ) + ( len - num - 1 ) * len;
@@ -228,6 +228,7 @@ class Border {
       }
 
     }
+
     if ( ( num + 2 ) <= 8 ) {
 
       if ( ( pos - 1 ) >= 0 ) {
@@ -236,6 +237,7 @@ class Border {
         steps.push( index );
 
       }
+
       if ( ( pos + 1 ) < 8 ) {
 
         const index = ( pos + 1 ) + ( len - num - 2 ) * len;

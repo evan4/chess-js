@@ -16,7 +16,9 @@ module.exports = {
         "allowTernary": true,
         "indent": ["error", 2],
         "space-before-blocks": "error",
-        "space-infix-ops": ["error", {"int32Hint": false}],
+        "space-infix-ops": ["error", {
+            "int32Hint": false
+        }],
         "padded-blocks": ["error", "always"],
         "space-in-parens": ["error", "always"],
         "array-bracket-spacing": ["error", "always"],
@@ -55,6 +57,15 @@ module.exports = {
                 "exceptions": ["*"],
                 "balanced": true
             }
+        }],
+        "func-style": ["error", "declaration", {
+            "allowArrowFunctions": true
+        }],
+        "prefer-spread": "error",
+        "padded-blocks": ["error", {
+            "blocks": "always",
+            "classes": "always",
+            "switches": "always"
         }]
     }
 };

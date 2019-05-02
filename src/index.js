@@ -1,5 +1,6 @@
 import './css/bootstrap.min.css';
+import './css/style.css';
 
 import Border from './Border';
 
-Border.init().start();
+Border.defaultState().start();

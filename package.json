@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/evan4/knight-move"
+    "url": "git+https://github.com/evan4/chess-js"
   },
   "keywords": [],
   "author": "",
